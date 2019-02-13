@@ -1,0 +1,4 @@
+<launch>
+    <node name="pointcloud_transformer_1" pkg="pointcloud_transformer" 
+            type="pointcloud_transformer_node" args="0.2 0.0" respawn="false" output="screen"/>
+</launch>
