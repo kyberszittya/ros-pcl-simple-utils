@@ -53,10 +53,7 @@ public:
     transform_2.rotate (Eigen::AngleAxisf (theta, Eigen::Vector3f::UnitY()));
     transform_2.rotate (Eigen::AngleAxisf (psi,   Eigen::Vector3f::UnitX()));
 
-    // Print the transformation
-    printf ("\nMethod #2: using an Affine3f\n");
-    std::cout << transform_2.matrix() << std::endl;
-
+    
     // Executing the transformation
     pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud (
       new pcl::PointCloud<pcl::PointXYZ> ()
@@ -75,12 +72,18 @@ public:
 int main (int argc, char** argv)
 {
   ros::init(argc, argv, "static_pcl_transformer");
-  float theta = std::atof(argv[1]);
-  float psi   = std::atof(argv[2]);
-  ROS_INFO("Using theta (pitch) %3f", theta);
-  ROS_INFO("Using psi  (roll) %3f", psi);
-  std::shared_ptr<ros::NodeHandle> nh = std::shared_ptr<ros::NodeHandle>(new ros::NodeHandle());
-  PointCloudTransformNode pnode(theta, psi);
-  pnode.initialize(nh);
-  ros::spin();
+  if (argc == 3){
+    float theta = std::atof(argv[1]);
+    float psi   = std::atof(argv[2]);
+    ROS_INFO("Using theta (pitch) %3f", theta);
+    ROS_INFO("Using psi  (roll) %3f", psi);
+    std::shared_ptr<ros::NodeHandle> nh = std::shared_ptr<ros::NodeHandle>(new ros::NodeHandle());
+    PointCloudTransformNode pnode(theta, psi);
+    pnode.initialize(nh);
+    ros::spin();
+  }else {
+    ROS_ERROR("Pitch and roll not set");
+    return -1;
+  }
+  
 }
